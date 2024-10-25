@@ -35,7 +35,7 @@ public class Escenario {
                         
                         if (e instanceof Destruible destruible) {
                             destruible.destruir(); // Destruir el elemento
-                            System.out.println("Elemento destruido: " + e.getClass().getSimpleName());
+                            //System.out.println("Elemento destruido: " + e.getClass().getSimpleName());
                             it.remove(); // Eliminar el elemento del campo de batalla
                         }
                     }
