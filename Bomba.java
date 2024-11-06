@@ -6,6 +6,13 @@ public class Bomba extends Elemento implements Destruible {
         this.radio = radio;
     }
 
+    public int getRadio(){
+        return radio;
+    }
+    public void setRadio(int radio) {
+        this.radio = radio;
+    }
+
     @Override
     public char getRepresentacion() {
         return 'B';

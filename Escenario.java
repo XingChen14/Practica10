@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 
 public class Escenario {
@@ -74,5 +75,79 @@ public class Escenario {
 
         return "\nNombre Batalla: "+ nombre + "\n" +sb.toString();
     }
+
+    // Método para cargar elementos desde un archivo
+    public void cargarArchivo(String nameArchivo){
+        try (Scanner scanner = new Scanner(new File(nameArchivo))){
+            while(scanner.hasNextLine()){
+                String[] linea = scanner.nextLine().split(" ");
+                String tipo = linea[0];
+                int renglon = Integer.parseInt(linea[1]);
+                int columna = Integer.parseInt(linea[2]);
+                Posicion posicion = new Posicion(renglon, columna);
+
+                switch (tipo) {
+                    case "Roca" -> addElemento(new Roca(this, posicion));
+                    case "Extraterrestre" -> {
+                        String nombreExtraterrestre = linea[3];
+                        addElemento(new Extraterrestre(nombreExtraterrestre, this, posicion));
+                    }
+                    case "Bomba" -> {
+                        int radio = Integer.parseInt(linea[3]);
+                        addElemento(new Bomba(this, posicion, radio));
+                    }
+                    case "Terricola" -> {
+                        String nombreTerricola = linea[3];
+                        addElemento(new Terricola(nombreTerricola, this, posicion));
+                    }
+                    default -> throw new AssertionError();
+                }
+            } 
+        }catch(FileNotFoundException e){
+            System.out.println("Archivo no encontrado: " + nameArchivo);
+        }
+    }
+
+    // Método para guardar la configuración actual en el archivo
+    public void guardarEnArchivo(String nameArchivo) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(nameArchivo))) {
+            for (Elemento e : campoDeBatalla) {
+                Posicion pos = e.getPosicion();
+                if (e instanceof Roca) {
+                    writer.printf("Roca %d %d%n", pos.getRenglon(), pos.getColumna());
+                } else if (e instanceof Extraterrestre extraterrestre) {
+                    writer.printf("Extraterrestre %d %d %s%n", pos.getRenglon(), pos.getColumna(), extraterrestre.toString());
+                } else if (e instanceof Bomba bomba) {
+                    writer.printf("Bomba %d %d %d%n", pos.getRenglon(), pos.getColumna(), bomba.getRadio());
+                } else if (e instanceof Terricola terricola) {
+                    writer.printf("Terricola %d %d %s%n", pos.getRenglon(), pos.getColumna(), terricola.toString());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al guardar el archivo: " + e.getMessage());
+        }
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public ArrayList<Elemento> getCampoDeBatalla() {
+        return campoDeBatalla;
+    }
+    public void setCampoDeBatalla(ArrayList<Elemento> campoDeBatalla) {
+        this.campoDeBatalla = campoDeBatalla;
+    }
+
+    public int getDimension() {
+        return dimension;
+    }
+    public void setDimension(int dimension) {
+        this.dimension = dimension;
+    }
+
 
 }
