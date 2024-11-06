@@ -1,89 +1,41 @@
 PROJECT TITLE: 
-Práctica 10 Clases abstractas e interfaces
+Práctica #11 - Persistencia
 
-PURPOSE OF PROJECT: Implementar un programa orientado a objetos basado en un diseño con clases abstractas e interfaces para definir comportamientos comunes y contratos que faciliten la interoperabilidad de los componentes y el mantenimiento del software, con actitud analítica y reflexiva.
+PURPOSE OF PROJECT: Implementar programas con persistencia de datos para guardar el estado de los de los objetos mediante las operaciones de la lectura y escritura de archivos de texto, con actitud analítica y reflexiva.
 
-VERSION or DATE: Version 1 (23/10/2024)
+VERSION or DATE: Version 1 (06/11/2024)
 
 HOW TO START THIS PROJECT:
 
 AUTHORS: Ana Chen Zhang
 
 DEFINITIONS:
-Clase Abstracta: Una clase abstracta en programación orientada a objetos es una plantilla que define un conjunto de atributos y métodos que las clases derivadas deben implementar, pero que no puede ser instanciada por sí misma. 
-                 Su propósito es proporcionar una base común para otras clases, permitiendo la creación de jerarquías de clases donde ciertas características y comportamientos son compartidos, mientras que los detalles específicos se definen en las subclases. 
-                 Las clases abstractas pueden contener métodos abstractos (sin implementación) que obligan a las subclases a ofrecer su propia implementación, así como métodos concretos (con implementación) que pueden ser utilizados directamente o sobreescritos. Este enfoque promueve la reutilización de código y facilita el mantenimiento, al permitir que los cambios en la clase base se propaguen a todas las subclases.
-
-Interface (interfaz): Una interfaz en programación orientada a objetos es un contrato que define un conjunto de métodos que una clase debe implementar, sin proporcionar ninguna implementación concreta para esos métodos. 
-                      A diferencia de las clases, las interfaces no pueden contener atributos o métodos con implementación (en versiones anteriores a Java 8); su propósito principal es establecer una estructura que las clases concretas deben seguir, promoviendo la interoperabilidad y la flexibilidad del código. 
-                      Las interfaces permiten que diferentes clases, incluso aquellas que no están relacionadas jerárquicamente, puedan ser tratadas de manera uniforme si implementan la misma interfaz.
-                      Esto facilita la implementación de principios como la programación orientada a contratos y el polimorfismo, ya que permite a los desarrolladores crear código más modular y extensible.
-
+Persistencia: La persistencia de datos en el contexto de la programación orientada a objetos (POO) con Java se refiere a la capacidad de los objetos creados en un programa para seguir existiendo más allá de la duración de la ejecución del mismo. Esto se logra almacenando el estado de estos objetos en un medio externo, como un archivo de texto, de manera que puedan ser recuperados y reconstruidos en ejecuciones futuras del programa. Implementar la persistencia mediante archivos de texto en Java generalmente implica convertir los atributos de los objetos en cadenas de texto (serialización manual) y escribirlas en un archivo. Posteriormente, al leer el archivo, se procesan estas cadenas para reconstruir los objetos originales, asegurando que el programa pueda retomar su estado anterior de manera eficiente. Esta técnica es útil para aplicaciones simples o cuando no se necesita el uso de una base de datos completa para el almacenamiento de datos.
 
 USER INSTRUCTIONS:
-Se requiere implementar el motor básico de un videojuego que contenga elementos de varios tipos: personajes, bombas y rocas; estos se pueden ubicar en un escenario. Algunos elementos podrán realizar acciones que modificarán el escenario bajo ciertas reglas.
+Modificar el código de la Práctica 10 para agregar un mecanismo de almacenamiento del Escenario.
+Utilizar el siguiente formato para almacenar en un archivo de texto una configuración de objetos de un escenario. Cada línea de texto del archivo deberá tener el siguiente formato:
+        <Elemento> <Renglon> <Columna> [parámetros adicionales]
+Por ejemplo, para representar una Roca en la posición (3,4) un Extraterrestre en la posición (4,4) y una Bomba con radio de acción 1 en la posición (4,3), el archivo de configuración será de la siguiente forma:
+        Roca 3 4
+        Extraterrestre 4 4
+        Bomba 4 3 1
+El archivo de configuración inicial se podrá crear con un editor de texto sencillo (e.g. notepad)
 
-Los requerimientos específicos son los siguientes:
-R01- Se deberán poder ubicar elementos en el objeto escenario.
-R02- La representación en cadena del Escenario (toString) deberá ser una matriz de caracteres de N x N con indicadores diferentes para cada tipo de Elemento, por ejemplo ver la Fig. 1
-                    0 0 0 0 0 0 0 0 0 0
-                    0 0 0 0 0 0 0 0 0 0
-                    0 0 0 0 0 0 0 0 0 0
-                    0 0 T 0 0 E 0 0 0 0
-                    0 0 0 R B 0 0 0 0 0
-                    0 0 0 0 0 0 0 0 0 0
-                    0 0 0 0 0 0 0 0 0 0
-                    0 0 0 0 0 0 0 0 0 0
-                    0 0 0 0 0 0 0 0 0 0
-                    0 0 0 0 0 0 0 0 0 0
-Fig.1 Ejemplo de cadena que retorna Escenario.toString()
-En la Fig. 1 se muestra un Escenario de 10 x 10 donde están ubicados un Terricola en la posición (3,2), un Extraterreste en la posición (3,5), una Roca en la posición (4,3) y una Bomba en la posición (4,4)
-
-R03 - Cada objeto tipo Bomba tendrá un radio de alcance, el cual se le definirá cuando se cree el objeto (parámetro del constructor). Cuando se invoque el método explotar() de la Bomba, deberá avisarle al Escenario que destruya a los objetos destruibles en el radio de alcance invocando el método Escenario.destruirElementos().
-
-En el ejemplo de la Fig. 1 si Bomba tiene un radio de alcance de 1, deberá destruir solo al Extraterrestre y a la Bomba misma. La salida esperada para este ejemplo  es la siguiente:
-                    Explotando bomba!!
-                    Alien destruido
-                    Bomba destruida
-Fig. 2 - Ejemplo de salida del método Bomba.explotar().
-
-R04 - El método Escenario.destruirElementos() deberá crear un ArrayList con todos los objetos dentro del área de la explosión, después filtrar en el ArrayList los que implementan la interfaz Destruible para sobre de ellos ejecutar el método destruir() y desplegar en consola el resultado (ver Fig 2).
-
-R05 - Utilizar la instrucción  instanceof  para determinar si un objeto es de un tipo particular. 
-Por ejemplo, si se tiene un objeto p del tipo Extraterrestre:
-            p instanceof Extraterrestre    // es verdadero por tipo directo
-            p instanceof Personaje          // es verdadero por herencia
-            p instanceof Destruible         // es verdadero por interface
-            p instanceof Elemento         // es verdadero por herencia
-            p instanceof Escenario        // es falso, nada que ver
-
-R06 - El método main de MisionPosibleMain deberá ser el siguiente:
-    public static void main(String[] args) {
-    	Escenario e = new Escenario("Nostromo");
-    	e.addElemento(new Terricola("Ripley", e,new Posicion(3,2)));
-    	e.addElemento(new Extraterrestre("Alien", e,new Posicion(3,5)));
-    	e.addElemento(new Roca(e, new Posicion(4,3)));
-    	Bomba b = new Bomba(e, new Posicion(4,4),1);
-    	e.addElemento(b);
-    	System.out.println(e);
-    	b.explotar();
-	}
-    //La salida del main es lo que se muestra en Fig. 1 y Fig. 2.
-
-En el diagrama  3 se muestran las clases a implementar y sus relaciones.
-
-
-
-
-
+REQUIREMENTS SPECIFICATION:
+Modificar el programa MisionPosible para que cumpla con los siguientes requerimientos:
+    R01. Que lea de archivo la configuración inicial de Elementos (Bombas, Extraterrestres, Terricolas, Rocas) y los agregue al Escenario.
+    R02. Que despliegue el estado actual del Escenario  (matriz con ceros o letras en la ubicación de los elementos)
+    R03. Que lea del teclado la instrucción de detonar alguna bomba en particular. 
+    R04. Que despliegue de nuevo el estado actual del Escenario.
+    R05. Que guarde la configuración actual de los Elementos en el mismo archivo de configuración.  
 
 
 ACTIVITIES:
-    Implementar las clases del diagrama de la Fig. 3 que cumpla con los requerimientos definidos anteriormente.
-
-    Versionar el código en un nuevo repositorio y subir el código a GitHub como practica10
-
+    Crear un branch llamado practica11 en su repositorio practica10.
+    Implementar el código para cumplir con los requerimientos de la práctica. 
     Si se entrega después de la hora límite, se tiene que realizar un video para explicar el funcionamiento del programa y que permita evaluar el nivel de conocimiento que tienen del código presentado.
+    Entregar por classroom la URL del repositorio de código en GitHub, y en caso de entrega tardía, entregar también el enlace al video explicando el funcionamiento.
 
 
 DELIVERY:
@@ -98,3 +50,51 @@ EVALUATION CRITERIA
     Legibilidad del código (indentación, nombrado de variables, comentarios y documentación).
     Uso adecuado de encapsulamiento, herencia y polimorfismo.
 
+Sample code for manipulating text files:
+// Método para escribir en un archivo de texto
+public static void escribirConfiguracion(String nombreArchivo, List<String> configuracion) {
+    BufferedWriter writer = null;
+    try {
+        writer = new BufferedWriter(new FileWriter(nombreArchivo));
+        for (String linea : configuracion) {
+            writer.write(linea);
+            writer.newLine();
+        }
+        System.out.println("Configuración escrita en el archivo: " + nombreArchivo);
+    } catch (IOException e) {
+        System.err.println("Error al escribir en el archivo: " + e.getMessage());
+    } finally {
+        if (writer != null) {
+            try {
+                writer.close();
+            } catch (IOException e) {
+                System.err.println("Error al cerrar el archivo: " + e.getMessage());
+            }
+        }
+    }
+}
+
+// Método para leer desde un archivo de texto
+public static List<String> leerConfiguracion(String nombreArchivo) {
+    List<String> configuracion = new ArrayList<>();
+    BufferedReader reader = null;
+    try {
+        reader = new BufferedReader(new FileReader(nombreArchivo));
+        String linea;
+        while ((linea = reader.readLine()) != null) {
+            configuracion.add(linea);
+        }
+        System.out.println("Configuración leída del archivo: " + nombreArchivo);
+    } catch (IOException e) {
+        System.err.println("Error al leer el archivo: " + e.getMessage());
+    } finally {
+        if (reader != null) {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                System.err.println("Error al cerrar el archivo: " + e.getMessage());
+            }
+        }
+    }
+    return configuracion;
+}

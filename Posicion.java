@@ -1,4 +1,3 @@
-import static java.lang.Math.*;
 
 public class Posicion {
     private int renglon;
@@ -15,5 +14,13 @@ public class Posicion {
     
     public int getColumna() {
         return columna;
+    }
+
+    public void setRenglon(int renglon) {
+        this.renglon = renglon;
+    }
+
+    public void setColumna(int columna) {
+        this.columna = columna;
     }
 }
